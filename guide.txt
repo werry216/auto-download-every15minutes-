@@ -1,0 +1,5 @@
+1. Download and install firefox latest version
+2. Install cors unblock(firefox extension)
+3. Build aparch server(php, MySQL)
+  - Download and install Xampp(7.4)
+  - Download php excel library

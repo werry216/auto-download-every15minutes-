@@ -1,0 +1,23 @@
+#time-panel {
+    color: white;
+    cursor: pointer;
+}
+
+.frequency-panel {
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 100%;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.frequency-panel h3 {
+    font-size: 50px;
+}
+
+.frequency-panel h1 {
+    font-size: 240px;
+}
