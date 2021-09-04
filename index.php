@@ -375,7 +375,7 @@
                 </div>
                 <div class="form-group col col-md-6 col-lg-6 col-xs-12">
                   <label for="ro_new_r_0"> R_0: </label>
-                  <input type="text" class="form-control" placeholder="Enter R_0" id="ro_new_r_0" required>
+                  <input type="number" class="form-control" placeholder="Enter R_0" id="ro_new_r_0" required>
                   <div class="valid-feedback">Valid.</div>
                   <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
@@ -411,7 +411,7 @@
                 </div>
                 <div class="form-group col col-md-6 col-lg-6 col-xs-12">
                   <label for="ro_edit_r_0"> R_0: </label>
-                  <input type="text" class="form-control" placeholder="Enter R_0" id="ro_edit_r_0" required>
+                  <input type="number" class="form-control" placeholder="Enter R_0" id="ro_edit_r_0" required>
                   <div class="valid-feedback">Valid.</div>
                   <div class="invalid-feedback">Please fill out this field.</div>
                 </div>

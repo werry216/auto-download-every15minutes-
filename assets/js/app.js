@@ -1,80 +1,80 @@
 TweenLite.defaultEase = Expo.easeOut;
 
-// initTimer(`${new Date().getHours()}:${new Date().getMinutes()}`); // other ways --> "0:15" "03:5" "5:2"
+initTimer(`${new Date().getHours()}:${new Date().getMinutes()}`); // other ways --> "0:15" "03:5" "5:2"
 
-// var confirm = 1;
-// var timerEl = document.querySelector('.timer');
+var confirm = 1;
+var timerEl = document.querySelector('.timer');
 
-// function initTimer (t) {
+function initTimer (t) {
    
-//     var self = this,
-//         timerEl = document.querySelector('.timer'),
-//         minutesGroupEl = timerEl.querySelector('.minutes-group'),
-//         secondsGroupEl = timerEl.querySelector('.seconds-group'),
+    var self = this,
+        timerEl = document.querySelector('.timer'),
+        minutesGroupEl = timerEl.querySelector('.minutes-group'),
+        secondsGroupEl = timerEl.querySelector('.seconds-group'),
 
-//         minutesGroup = {
-//             firstNum: minutesGroupEl.querySelector('.first'),
-//             secondNum: minutesGroupEl.querySelector('.second')
-//         },
+        minutesGroup = {
+            firstNum: minutesGroupEl.querySelector('.first'),
+            secondNum: minutesGroupEl.querySelector('.second')
+        },
 
-//         secondsGroup = {
-//             firstNum: secondsGroupEl.querySelector('.first'),
-//             secondNum: secondsGroupEl.querySelector('.second')
-//         };
+        secondsGroup = {
+            firstNum: secondsGroupEl.querySelector('.first'),
+            secondNum: secondsGroupEl.querySelector('.second')
+        };
 
-//     var time = {
-//         min: t.split(':')[0],
-//         sec: t.split(':')[1]
-//     };
+    var time = {
+        min: t.split(':')[0],
+        sec: t.split(':')[1]
+    };
 
-//    var timeNumbers;
+   var timeNumbers;
 
-//     function updateTimer() {
+    function updateTimer() {
 
-//         var timestr;
-//         var date = new Date();
+        var timestr;
+        var date = new Date();
 
-//         date.setHours(0);
-//         date.setMinutes(time.min);
-//         date.setSeconds(time.sec);
+        date.setHours(0);
+        date.setMinutes(time.min);
+        date.setSeconds(time.sec);
 
-//         var newDate = new Date(date.valueOf() + 1000);
-//         var temp = newDate.toTimeString().split(" ");
-//         var tempsplit = temp[0].split(':');
+        var newDate = new Date(date.valueOf() + 1000);
+        var temp = newDate.toTimeString().split(" ");
+        var tempsplit = temp[0].split(':');
 
-//         time.min = tempsplit[1];
-//         time.sec = tempsplit[2];
+        time.min = tempsplit[1];
+        time.sec = tempsplit[2];
 
-//         timestr = time.min + time.sec;
-//         timeNumbers = timestr.split('');
-//         updateTimerDisplay(timeNumbers);
+        timestr = time.min + time.sec;
+        timeNumbers = timestr.split('');
+        updateTimerDisplay(timeNumbers);
 
-//         if(confirm)
-//             setTimeout(updateTimer, 1000);
+        if(confirm)
+            setTimeout(updateTimer, 1000);
 
-//     }
+    }
 
-//     function updateTimerDisplay(arr) {
+    function updateTimerDisplay(arr) {
 
-//         animateNum(minutesGroup.firstNum, arr[0]);
-//         animateNum(minutesGroup.secondNum, arr[1]);
-//         animateNum(secondsGroup.firstNum, arr[2]);
-//         animateNum(secondsGroup.secondNum, arr[3]);
+        animateNum(minutesGroup.firstNum, arr[0]);
+        animateNum(minutesGroup.secondNum, arr[1]);
+        animateNum(secondsGroup.firstNum, arr[2]);
+        animateNum(secondsGroup.secondNum, arr[3]);
 
-//     }
+    }
 
-//     function animateNum (group, arrayValue) {
+    function animateNum (group, arrayValue) {
 
-//         TweenMax.killTweensOf(group.querySelector('.number-grp-wrp'));
-//         TweenMax.to(group.querySelector('.number-grp-wrp'), 1, {
-//             y: - group.querySelector('.num-' + arrayValue).offsetTop
-//         });
+        TweenMax.killTweensOf(group.querySelector('.number-grp-wrp'));
+        TweenMax.to(group.querySelector('.number-grp-wrp'), 1, {
+            y: - group.querySelector('.num-' + arrayValue).offsetTop
+        });
 
-//     }
+    }
    
-//    setTimeout(updateTimer, 1000);
+   setTimeout(updateTimer, 1000);
 
-// }
+}
 
 let zafra_table, ro_table, ra_table, batches_table;
 let zafra_format_request = false, ro_format_request = false, ra_format_request = false, batches_format_request = false;
@@ -234,16 +234,16 @@ const renderRoTable = (ros = []) => {
 }
 
 $(document).ready(() => {
-    // $("#loading").loading('circle1');
-    // $.post("vendor/server/app.php").then((result) => {
-    //     result = JSON.parse(result);
-    //     const { zafra_masters, master_ro, master_ra, master_batches } = result;
-    //     renderZafraTable(zafra_masters);
-    //     renderRaTable(master_ra);
-    //     renderRoTable(master_ro);
-    //     renderBatchesTable(master_batches);
-    //     $('#loading').loading(false);
-    // });
+    $("#loading").loading('circle1');
+    $.post("vendor/server/app.php").then((result) => {
+        result = JSON.parse(result);
+        const { zafra_masters, master_ro, master_ra, master_batches } = result;
+        renderZafraTable(zafra_masters);
+        renderRaTable(master_ra);
+        renderRoTable(master_ro);
+        renderBatchesTable(master_batches);
+        $('#loading').loading(false);
+    });
     $("#zafra-add-btn").on("click", () => zafra_add());
     $("#zafra-edit-btn").on("click", () => zafra_edit());
     $("#ro-add-btn").on("click", () => ro_add());
