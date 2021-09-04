@@ -16,6 +16,10 @@ https://www.tooplate.com/view/2113-earth
   }
 }
 
+button, input {
+  outline: none!important;
+}
+
 .seq-preloader {
   background: white;
   visibility: visible;
@@ -161,20 +165,20 @@ body {
 }
 
 nav {
-	top: 15%;
   text-align: center;
   background: rgba(0, 0, 0, 0.75);
   position: fixed;
   z-index: 100;
-  height: 90%;
+  height: 100%;
+  top: 60px;
   left: 0;
-  width: 15%;
+  width: 14%;
   font-weight: 300;
   font-size: 1rem;
 }
 nav em {
 	font-style: normal;
-	font-size: 13px;
+	font-size: 12px;
 	text-transform: uppercase;
 	display: block;
 	margin-top: 15px;
@@ -187,12 +191,12 @@ nav ul li a {
 
 nav ul {
 	position: relative;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
 	text-align: left;
 	list-style-type: none;
-	height: 70%;
+	height: 90%;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -234,6 +238,7 @@ nav a::before {
 }
 .logo {
 	margin-top: 0px;
+  border-right: 1px solid lightgray;
   top: 0;
   left: 0;
   z-index: 999999;
@@ -241,8 +246,8 @@ nav a::before {
  	display: inline-block;
   text-align: center;
 	background-color: #faf5b2;
-	height: 15%;
-	width: 15%;
+	height: 60px;
+	width: 14%;
 }
 .logo h1 {
   font-size: 24px;
@@ -259,7 +264,7 @@ nav a::before {
 }
 .slides {
   width: 500vw;
-  height: 100vh;
+  height: 100%;
   -webkit-transition: -webkit-transform 0.8s ease;
   transition: -webkit-transform 0.8s ease;
   transition: transform 0.8s ease;
@@ -273,12 +278,12 @@ nav a::before {
   background-size: cover;
 }
 .slides .slide .content {
-  overflow-y: scroll;
+  overflow: auto;
   position: relative;
-  width: 80%;
-  height: 80%;
-  left: 20%;
-  top: 10%;
+  width: 80.5%;
+  left: 17%;
+  height: 100%;
+  top: 10px;
 }
 .content::-webkit-scrollbar {
   display: none!important;
@@ -296,22 +301,23 @@ nav a::before {
   background-size: cover;
   background-position: fixed;
 }
-.slides .slide:nth-child(1) {
 
-}
-.slides .slide:nth-child(2) {
-  background-image: url(../images/about-bg.jpg);
+/* .slides .slide:nth-child(2) {
+  background-image: url(../images/background/2.jpg);
   background-position: fixed;
-}
-.slides .slide:nth-child(3) {
-  background-image: url(../images/gallery-bg.jpg);
+} */
+/* .slides .slide:nth-child(3) {
+  background-image: url(../images/background/1.jpg);
   background-position: fixed;
-}
-.slides .slide:nth-child(4) {
+} */
+/* .slides .slide:nth-child(4) {
   background-image: url(../images/contact-bg.jpg);
   background-position: fixed;
 }
-
+.slides .slide:nth-child(5) {
+  background-image: url(../images/contact-bg.jpg);
+  background-position: fixed;
+} */
 /* Slide 1 Stlye */
 #slider-wrapper{
   max-width: 100%;
@@ -348,13 +354,13 @@ nav a::before {
   overflow: hidden;
 }
 #image-slider ul li:nth-child(1) {
-  background-image: url(../images/full-bg-01.jpg);
+  background-image: url(../images/background/1.jpg);
 }
 #image-slider ul li:nth-child(2) {
-  background-image: url(../images/full-bg-02.jpg);
+  background-image: url(../images/background/2.jpg);
 }
 #image-slider ul li:nth-child(3) {
-  background-image: url(../images/full-bg-03.jpg);
+  background-image: url(../images/background/3.jpg);
 }
 #image-slider ul li.active-img{
   left: 0;
@@ -648,12 +654,12 @@ nav a::before {
   	margin-top: 0px;
     line-height: 100px;
     height: 100px;
-    width: 15vw;
+    width: 14%;
     top: 0;
     left: 0;
     z-index: 999999;
     position: fixed;
-    font-size: 24px;
+    font-size: 15px;
     text-transform: uppercase;
     font-weight: 900;
     color: #111;
@@ -663,9 +669,9 @@ nav a::before {
   }
   nav {
     top: 0vh;
+    left: 14%;
     height: 100px;
-    width: 85vw;
-    margin-left: 15vw;
+    width: 86%;
   }
   nav ul {
     flex-direction: row;
