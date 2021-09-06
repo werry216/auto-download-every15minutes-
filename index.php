@@ -369,7 +369,20 @@
               <div class="row">
                 <div class="form-group col col-md-6 col-lg-6 col-xs-12">
                   <label for="ro_new_mes"> mes: </label>
-                  <input type="text" class="form-control" placeholder="Enter mes" id="ro_new_mes" required>
+                  <select class="form-control" name="ro_new_mes" id="ro_new_mes" required>
+                    <option value="ene"> ene </option>
+                    <option value="feb"> feb </option>
+                    <option value="mar"> mar </option>
+                    <option value="abr"> abr </option>
+                    <option value="may"> may </option>
+                    <option value="jun"> jun </option>
+                    <option value="jul"> jul </option>
+                    <option value="ago"> ago </option>
+                    <option value="sep"> sep </option>
+                    <option value="oct"> oct </option>
+                    <option value="nov"> nov </option>
+                    <option value="dic"> dic </option>
+                  </select>
                   <div class="valid-feedback">Valid.</div>
                   <div class="invalid-feedback">Please fill out this field.</div>
                 </div>
@@ -405,7 +418,20 @@
               <div class="row">
                 <div class="form-group col col-md-6 col-lg-6 col-xs-12">
                   <label for="ro_edit_mes"> mes: </label>
-                  <input type="text" class="form-control" placeholder="Enter mes" id="ro_edit_mes" required>
+                  <select class="form-control" name="ro_edit_mes" id="ro_edit_mes" required>
+                    <option value="ene"> ene </option>
+                    <option value="feb"> feb </option>
+                    <option value="mar"> mar </option>
+                    <option value="abr"> abr </option>
+                    <option value="may"> may </option>
+                    <option value="jun"> jun </option>
+                    <option value="jul"> jul </option>
+                    <option value="ago"> ago </option>
+                    <option value="sep"> sep </option>
+                    <option value="oct"> oct </option>
+                    <option value="nov"> nov </option>
+                    <option value="dic"> dic </option>
+                  </select>
                   <div class="valid-feedback">Valid.</div>
                   <div class="invalid-feedback">Please fill out this field.</div>
                 </div>

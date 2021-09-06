@@ -1,6 +1,6 @@
 const downloadRequest = () => {
     $("#loading").loading('circle1');
-    let today = new Date("2021-09-03");
+    let today = new Date("2021-09-04");
     today.setMinutes(today.getMinutes() - 15);
     let next = new Date();
     let hour = today.getHours();
