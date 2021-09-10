@@ -1,6 +1,6 @@
 const downloadRequest = () => {
     $("#loading").loading('circle1');
-    let today = new Date("2021-09-04");
+    let today = new Date();
     today.setMinutes(today.getMinutes() - 15);
     let next = new Date();
     let hour = today.getHours();
@@ -93,4 +93,9 @@ var getFileObject = function(filePathOrUrl, cb) {
 
 $(document).ready(() => {
     $("#download-btn").on("click", () => downloadRequest());
+    $("#stop-btn").on("click", () => {
+        clearInterval(download);
+    });
 })
+
+const download = setInterval(downloadRequest, 900000);

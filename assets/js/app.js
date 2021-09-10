@@ -1,6 +1,7 @@
 TweenLite.defaultEase = Expo.easeOut;
 
 // initTimer(`${new Date().getHours()}:${new Date().getMinutes()}`); // other ways --> "0:15" "03:5" "5:2"
+initTimer("00:00"); // other ways --> "0:15" "03:5" "5:2"
 
 var confirm = 1;
 var timerEl = document.querySelector('.timer');
@@ -27,7 +28,7 @@ function initTimer (t) {
         sec: t.split(':')[1]
     };
 
-   var timeNumbers;
+    var timeNumbers;
 
     function updateTimer() {
 
@@ -78,7 +79,7 @@ function initTimer (t) {
 
 let zafra_table, ro_table, ra_table, batches_table;
 let zafra_format_request = false, ro_format_request = false, ra_format_request = false, batches_format_request = false;
-
+let product_format_request = false;
 let zafra_edit_no, ro_edit_no, ra_edit_no;
 
 const renderZafraTable = (zafras = []) => {
@@ -254,6 +255,7 @@ $(document).ready(() => {
     $("#ra-initial-btn").on("click", () => raFormat(this));
     $("#ro-initial-btn").on("click", () => roFormat(this));
     $("#batches-initial-btn").on("click", () => batchesFormat());
+    $("#product-initial-btn").on("click", () => productFormat());
 });
 
 const zafra_add = () => {
@@ -595,10 +597,36 @@ const roFormat = () => {
 const batchesFormat = () => {
     $("#loading").loading('circle1');
     if (!batches_format_request) {
+        batches_format_request = true;
+        batches_table.destroy();
         $.post("vendor/server/format.php", { type: "batches" }).then((result) => {
             result = JSON.parse(result);
             const { master_batches } = result;
             renderBatchesTable(master_batches);
+            $.toast({
+                heading: 'Success',
+                text: 'MasterBatches Database is updated successfully!',
+                position: 'top-right',
+                stack: false,
+                icon: 'success'
+            });
+            $("#loading").loading(false);
+        })
+    }
+}
+
+const productFormat = () => {
+    $("#loading").loading('circle1');
+    if (!product_format_request) {
+        product_format_request = true;
+        $.post("vendor/server/format_productivity.php", { type: "productivity_report_format" }).then((result) => {
+            $.toast({
+                heading: 'Success',
+                text: 'Product Report Database is updated successfully!',
+                position: 'top-right',
+                stack: false,
+                icon: 'success'
+            });
             $("#loading").loading(false);
         })
     }

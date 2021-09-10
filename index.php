@@ -104,17 +104,20 @@
               <li class="active-img">
                 <br />
                 <a class="btn btn-danger" href="report" target="_blank">
-                  View Climate Report
-                </a>
+                  View Reports
+                </a>&nbsp;
+                <button id="product-initial-btn" class="btn btn-primary">
+                  Product Report initial
+                </button>&nbsp;
                 <button id="batches-initial-btn" class="btn btn-primary">
                   Master Batches initial
-                </button>
+                </button>&nbsp;
                 <button id="zafra-initial-btn" class="btn btn-primary">
                   Zafra initial
-                </button>
+                </button>&nbsp;
                 <button id="ro-initial-btn" class="btn btn-primary">
                   MasterRO initial
-                </button>
+                </button>&nbsp;
                 <button id="ra-initial-btn" class="btn btn-primary">
                   MasterRA initial
                 </button>
