@@ -58,8 +58,8 @@
 </head>
 <body>
 
-<div style="margin: 10px 20px">
-  <a href="" style="cursor: pointer">
+<div style="margin: 10px 20px;">
+  <a href="#" style="cursor: pointer">
     <img height="70px" style="margin-bottom: 10px" src="../assets/images/logo/1.png" />
   </a>
   <br />
@@ -71,24 +71,59 @@
     <li class="nav-item">
       <a class="nav-link" data-toggle="tab" href="#productivity"> Productivity Report </a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link" data-toggle="tab" href="#graphic"> Graphics </a>
+    <li class="nav-item" id="graphicRadiation-item">
+      <a class="nav-link" data-toggle="tab" href="#graphicRadiation"> Graphics(radiación) </a>
     </li>
   </ul>
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div id="climate" class="container tab-pane active"><br>
+    <div id="climate" class="tab-pane active"><br>
       <div id="report-climate-loading"></div>
+      <div class="row">
+        <div class="form-group col col-md-2 col-lg-2 col-xs-12">
+          <label for="start-date"> Start Date: </label>
+          <input type="date" class="form-control" id="start-date" onchange="climateFilter()" />
+        </div>
+        <div class="form-group col col-lg-2 col-md-2 col-xs-12">
+          <label for="end-date"> End Date: </label>
+          <input type="date" class="form-control" id="end-date" onchange="climateFilter()" />
+        </div>
+        <div class="form-group col col-lg-2 col-md-2 col-xs-12">
+          <label for="estacion-filter"> Estacion: </label>
+          <select name="estacion-filter" id="estacion-filter" class="form-control" onchange="climateFilter()">
+            <option value="All"> All </option>
+            <option value="Bonanza"> Bonanza </option>
+            <option value="La Giralda"> La Giralda </option>
+            <option value="Amazonas"> Amazonas </option>
+            <option value="San Rafael"> San Rafael </option>
+            <option value="Concepción"> Concepción </option>
+            <option value="Costa Brava"> Costa Brava </option>
+            <option value="Peten Oficina"> Peten Oficina </option>
+            <option value="Cocales"> Cocales </option>
+            <option value="Cengicana"> Cengicana </option>
+            <option value="Tehuantepeq"> Tehuantepeq </option>
+            <option value="San Antonio EV"> San Antonio EV </option>
+            <option value="Puyumate"> Puyumate </option>
+            <option value="El Balsamo"> El Balsamo </option>
+            <option value="Irlanda"> Irlanda </option>
+            <option value="Bouganvilia"> Bouganvilia </option>
+          </select>
+        </div>
+        <div class="col col-lg-6 col-md-6 col-xs-12">
+          <button class="btn btn-danger" style="margin-bottom: 20px; float: right" id="climate-download-btn"> Download </button>
+        </div>
+      </div>
       <table id="climate-table" class="cell-border hover display nowrap" style="width:100%"></table>
     </div>
-    <div id="productivity" class="container tab-pane"><br />
+    <div id="productivity" class="tab-pane fade"><br />
+      <div id="report-product-loading"></div>
+      <button class="btn btn-danger" id="product-download-btn"> Download </button>
       <button data-toggle="modal" data-target="#product-add-modal" class="btn btn-primary" style="margin-bottom: 20px; float: right"> New </button>
       <table id="product-table" class="cell-border hover display nowrap" style="width:100%"></table>
     </div>
-    <div id="graphic" class="container tab-pane fade"><br>
-      <h3>Menu 2</h3>
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+    <div id="graphicRadiation" class="tab-pane fade"><br>
+      <div id="chartContainer" style="width: 100%; margin: 0px auto;"></div>
     </div>
   </div>
 
@@ -189,8 +224,8 @@
                 <div class="invalid-feedback">Please fill out this field.</div>              
               </div>
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
-                <label for="new_product_tipo de cosecha"> Tipo de cosecha: </label>
-                <input type="text" class="form-control" placeholder="Enter Tipo de cosecha" id="new_product_tipo" required>
+                <label for="new_product_tipo_de_cosecha"> Tipo de cosecha: </label>
+                <input type="text" class="form-control" placeholder="Enter Tipo de cosecha" id="new_product_tipo_de_cosecha" required>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
@@ -329,7 +364,7 @@
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
                 <label for="new_product_Lotes_con_prequema"> Lotes con prequema (si o no): </label>
                 <select class="form-control" placeholder="Select Lotes con prequema (si o no)" id="new_product_Lotes_con_prequema" required>
-                  <option value="si"> si </option>
+                  <option value="yes"> si </option>
                   <option value="no"> no </option>
                 </select>
                 <div class="valid-feedback">Valid.</div>
@@ -426,32 +461,104 @@
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
-                <label for="new_product_VARIEDAD_IDEAL"> f.maxima corte y siembra: </label>
-                <input type="text" class="form-control" placeholder="Enter VARIEDAD IDEAL" id="new_product_VARIEDAD_IDEAL" required>
+                <label for="new_product_f_maxima_corte_siembra"> F.maxima corte y siembra: </label>
+                <input type="date" class="form-control" placeholder="Enter F.maxima corte y siembra" id="new_product_f_maxima_corte_siembra" required>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
-                <label for="new_product_VARIEDAD_IDEAL"> VARIEDAD IDEAL: </label>
-                <input type="text" class="form-control" placeholder="Enter VARIEDAD IDEAL" id="new_product_VARIEDAD_IDEAL" required>
+                <label for="new_product_sistema_de_riego"> Sistema de Riego: </label>
+                <input type="text" class="form-control" placeholder="Enter Sistema de Riego" id="new_product_sistema_de_riego" required>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
-                <label for="new_product_VARIEDAD_IDEAL"> VARIEDAD IDEAL: </label>
-                <input type="text" class="form-control" placeholder="Enter VARIEDAD IDEAL" id="new_product_VARIEDAD_IDEAL" required>
+                <label for="new_product_AREA_ENERO"> AREA ENERO: </label>
+                <input type="number" class="form-control" placeholder="Enter AREA ENERO" id="new_product_AREA_ENERO" required>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
-                <label for="new_product_VARIEDAD_IDEAL"> VARIEDAD IDEAL: </label>
-                <input type="text" class="form-control" placeholder="Enter VARIEDAD IDEAL" id="new_product_VARIEDAD_IDEAL" required>
+                <label for="new_product_TONS_ENERO"> TONS ENERO: </label>
+                <input type="number" class="form-control" placeholder="Enter TONS ENERO" id="new_product_TONS_ENERO" required>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
               <div class="form-group col col-md-6 col-lg-6 col-xs-12">
-                <label for="new_product_VARIEDAD_IDEAL"> VARIEDAD IDEAL: </label>
-                <input type="text" class="form-control" placeholder="Enter VARIEDAD IDEAL" id="new_product_VARIEDAD_IDEAL" required>
+                <label for="new_product_KG_CORE_ENERO"> KG CORE ENERO: </label>
+                <input type="number" class="form-control" placeholder="Enter KG CORE ENERO" id="new_product_KG_CORE_ENERO" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_KG_IND_ENERO"> KG IND ENERO: </label>
+                <input type="number" class="form-control" placeholder="Enter KG IND ENERO" id="new_product_KG_IND_ENERO" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_brix"> Brix: </label>
+                <input type="number" class="form-control" placeholder="Enter Brix" id="new_product_brix" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_pol"> Pol: </label>
+                <input type="number" class="form-control" placeholder="Enter Pol" id="new_product_pol" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_pza"> Pza: </label>
+                <input type="number" class="form-control" placeholder="Enter Pza" id="new_product_pza" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_jugo"> Jugo: </label>
+                <input type="number" class="form-control" placeholder="Enter Jugo" id="new_product_jugo" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_ph"> Ph: </label>
+                <input type="number" class="form-control" placeholder="Enter Ph" id="new_product_ph" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_humedad"> Humedad: </label>
+                <input type="number" class="form-control" placeholder="Enter Humedad" id="new_product_humedad" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_fibra"> Fibra: </label>
+                <input type="number" class="form-control" placeholder="Enter Fibra" id="new_product_fibra" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_TONS_CLEANER"> TONS CLEANER: </label>
+                <input type="number" class="form-control" placeholder="Enter TONS CLEANER" id="new_product_TONS_CLEANER" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_humedad_ant"> Humedad ant: </label>
+                <input type="number" class="form-control" placeholder="Enter Humedad ant" id="new_product_humedad_ant" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_extra1"> Extra1: </label>
+                <input type="number" class="form-control" placeholder="Enter Extra1" id="new_product_extra1" required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Please fill out this field.</div>
+              </div>
+              <div class="form-group col col-md-6 col-lg-6 col-xs-12">
+                <label for="new_product_extra2"> Extra2: </label>
+                <input type="number" class="form-control" placeholder="Enter Extra2" id="new_product_extra2" required>
                 <div class="valid-feedback">Valid.</div>
                 <div class="invalid-feedback">Please fill out this field.</div>
               </div>
@@ -473,9 +580,16 @@
 <script src="../vendor/loading/loading.min.js"></script>
 <script src="../vendor/dataTable/js/datatables.js"></script>
 <script src="../vendor/toast/js/jquery.toast.js"></script>
+<script src="./vendor/js/canvasjs.min.js"></script>
 
 <script src="./vendor/js/main.js"></script>
+<script src="./vendor/js/climate.js"></script>
+<script src="./vendor/js/product.js"></script>
+<script src="./vendor/js/chart.js"></script>
 <script>
+  window.onload = () => {
+    $("body").css("height", window.innerHeight);
+  }
   (function() {
     'use strict';
     window.addEventListener('load', function() {

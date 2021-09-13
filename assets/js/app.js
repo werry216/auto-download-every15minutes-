@@ -100,7 +100,7 @@ const renderZafraTable = (zafras = []) => {
             Mes_str,
             zafra,
             `
-                <button class="btn btn-sm btn-danger" onclick="zafra_remove(${No})">
+                <button class="btn btn-sm btn-danger" onclick="zafra_remove('${No}')">
                     remove
                 </button>&nbsp;
                 <button onclick='set_zafra_edit_no("${No}", "${ano_mes}", "${ano}", "${mes}", "${Mes_str}", "${zafra}")' class="btn btn-sm btn-primary" data-toggle="modal" data-target="#zafra-edit-modal">
