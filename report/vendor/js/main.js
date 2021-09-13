@@ -4,6 +4,8 @@ let productData = [];
 let climateData = [];
 $(document).ready(() => {
     $("#report-climate-loading").loading('circle1');
+    $("#graphicRadiation").css("display", "none");
+    $("#graphicEto").css("display", "none");
     $.post("vendor/server/getReport.php").then((result) => {
         result = JSON.parse(result);
         const { climate_reports, product_reports } = result;

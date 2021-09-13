@@ -9,7 +9,9 @@
   <link rel="stylesheet" href="../vendor/toast/css/jquery.toast.css" />
   <link rel="stylesheet" href="../vendor/dataTable/css/datatables.css" />
   <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
-  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css" />
+  <link rel="stylesheet" href="./vendor/css/chart.css" />
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -65,14 +67,17 @@
   <br />
   <!-- Nav tabs -->
   <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item">
+    <li class="nav-item" id="climate-item">
       <a class="nav-link active" data-toggle="tab" href="#climate"> Climate Report </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" id="productivity-item">
       <a class="nav-link" data-toggle="tab" href="#productivity"> Productivity Report </a>
     </li>
     <li class="nav-item" id="graphicRadiation-item">
       <a class="nav-link" data-toggle="tab" href="#graphicRadiation"> Graphics(radiación) </a>
+    </li>
+    <li class="nav-item" id="graphicEto-item">
+      <a class="nav-link" data-toggle="tab" href="#graphicEto"> Graphics(ETO) </a>
     </li>
   </ul>
 
@@ -122,8 +127,127 @@
       <button data-toggle="modal" data-target="#product-add-modal" class="btn btn-primary" style="margin-bottom: 20px; float: right"> New </button>
       <table id="product-table" class="cell-border hover display nowrap" style="width:100%"></table>
     </div>
-    <div id="graphicRadiation" class="tab-pane fade"><br>
-      <div id="chartContainer" style="width: 100%; margin: 0px auto;"></div>
+    <div id="graphicRadiation" class="tab-pane fade"
+      style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;"
+    ><br />
+      <div id="radiation-chart-container">
+        <div class="row">
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="radiation-year-filter" onchange="radiationChartFilter()">
+              <option value="2020"> 2020 </option>
+              <option value="2021"> 2021 </option>
+              <option value="2022"> 2022 </option>
+              <option value="2023"> 2023 </option>
+              <option value="2024"> 2024 </option>
+              <option value="2025"> 2025 </option>
+              <option value="2026"> 2026 </option>
+              <option value="2027"> 2027 </option>
+              <option value="2028"> 2028 </option>
+              <option value="2029"> 2029 </option>
+              <option value="2030"> 2030 </option>
+            </select>
+          </div>
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="radiation-estation-filter" onchange="radiationChartFilter()">
+              <option value="Bonanza"> Bonanza </option>
+              <option value="La Giralda"> La Giralda </option>
+              <option value="Amazonas"> Amazonas </option>
+              <option value="San Rafael"> San Rafael </option>
+              <option value="Concepción"> Concepción </option>
+              <option value="Costa Brava"> Costa Brava </option>
+              <option value="Peten Oficina"> Peten Oficina </option>
+              <option value="Cocales"> Cocales </option>
+              <option value="Cengicana"> Cengicana </option>
+              <option value="Tehuantepeq"> Tehuantepeq </option>
+              <option value="San Antonio EV"> San Antonio EV </option>
+              <option value="Puyumate"> Puyumate </option>
+              <option value="El Balsamo"> El Balsamo </option>
+              <option value="Irlanda"> Irlanda </option>
+              <option value="Bouganvilia"> Bouganvilia </option>
+            </select>
+          </div>
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <span style="font-size: 25px;"> zafra: <span id="zafra-content"></span> </span>
+          </div>
+        </div>
+        <br />
+        <canvas id="chart" width="400" height="120"></canvas>
+        <div id="radiation-month" style="height: 24px; margin: 0 8px auto 27px; border: 1px solid blue; display: flex; align-items: center; justify-content: space-around;">
+          <span> ene </span>
+          <span> feb </span>
+          <span> mar </span>
+          <span> abr </span>
+          <span> may </span>
+          <span> jun </span>
+          <span> jul </span>
+          <span> ago </span>
+          <span> sep </span>
+          <span> oct </span>
+          <span> nov </span>
+          <span> dic </span>
+        </div>
+      </div>
+    </div>
+    <div id="graphicEto" class="tab-pane fade"
+      style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;"
+    ><br />
+      <div id="eto-chart-container">
+        <div class="row">
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="eto-year-filter" onchange="etoChartFilter()">
+              <option value="2020"> 2020 </option>
+              <option value="2021"> 2021 </option>
+              <option value="2022"> 2022 </option>
+              <option value="2023"> 2023 </option>
+              <option value="2024"> 2024 </option>
+              <option value="2025"> 2025 </option>
+              <option value="2026"> 2026 </option>
+              <option value="2027"> 2027 </option>
+              <option value="2028"> 2028 </option>
+              <option value="2029"> 2029 </option>
+              <option value="2030"> 2030 </option>
+            </select>
+          </div>
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="eto-estation-filter" onchange="etoChartFilter()">
+              <option value="Bonanza"> Bonanza </option>
+              <option value="La Giralda"> La Giralda </option>
+              <option value="Amazonas"> Amazonas </option>
+              <option value="San Rafael"> San Rafael </option>
+              <option value="Concepción"> Concepción </option>
+              <option value="Costa Brava"> Costa Brava </option>
+              <option value="Peten Oficina"> Peten Oficina </option>
+              <option value="Cocales"> Cocales </option>
+              <option value="Cengicana"> Cengicana </option>
+              <option value="Tehuantepeq"> Tehuantepeq </option>
+              <option value="San Antonio EV"> San Antonio EV </option>
+              <option value="Puyumate"> Puyumate </option>
+              <option value="El Balsamo"> El Balsamo </option>
+              <option value="Irlanda"> Irlanda </option>
+              <option value="Bouganvilia"> Bouganvilia </option>
+            </select>
+          </div>
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <span style="font-size: 25px;"> zafra: <span id="zafra-content-eto"></span> </span>
+          </div>
+        </div>
+        <br />
+        <canvas id="chart-eto" width="400" height="120"></canvas>
+        <div id="eto-month" style="height: 24px; margin: 0 8px auto 27px; border: 1px solid blue; display: flex; align-items: center; justify-content: space-around;">
+          <span> ene </span>
+          <span> feb </span>
+          <span> mar </span>
+          <span> abr </span>
+          <span> may </span>
+          <span> jun </span>
+          <span> jul </span>
+          <span> ago </span>
+          <span> sep </span>
+          <span> oct </span>
+          <span> nov </span>
+          <span> dic </span>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -580,16 +704,16 @@
 <script src="../vendor/loading/loading.min.js"></script>
 <script src="../vendor/dataTable/js/datatables.js"></script>
 <script src="../vendor/toast/js/jquery.toast.js"></script>
-<script src="./vendor/js/canvasjs.min.js"></script>
 
+<!-- partial -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script src="./vendor/js/monthArray.js"></script>
 <script src="./vendor/js/main.js"></script>
 <script src="./vendor/js/climate.js"></script>
 <script src="./vendor/js/product.js"></script>
 <script src="./vendor/js/chart.js"></script>
 <script>
-  window.onload = () => {
-    $("body").css("height", window.innerHeight);
-  }
   (function() {
     'use strict';
     window.addEventListener('load', function() {
