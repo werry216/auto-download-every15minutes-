@@ -1,14 +1,25 @@
 let radiationChart, etoChart;
 let chartYear = new Date().getFullYear().toString();
 let etoYear = new Date().getFullYear().toString();
-let estacionData = "Bonanza";
+
+let quadrantRadiation = "";
+let regionRadiation = "";
+let estratoRadiation = "";
+let lotRadiation = 0;
+let estacionData = "";
+
 let estacionEto = "Bonanza";
 let renderRadiationConfirm = false;
 let renderEtoConfirm = false;
 let RadiationMonth = [];
 let EtoMonth = [];
-let RadiationMonthString = "";
-let EtoMonthString = "";
+let fechaData = [];
+
+let quadrantData = ["All"];
+let regionData = ["All"];
+let estratoData = ["All"];
+let lotData = [{lot: "All"}];
+let lotArray = [];
 
 $(document).ready(() => {
     $("#radiation-year-filter").val(chartYear);
@@ -21,14 +32,33 @@ $(document).ready(() => {
             setTimeout(() => {
                 let radiationChartData = [];
                 for (const climate of climateData) {
-                    const { Ano, Mes, Dia, Zafra, Radiacion, Estacion } = climate;
-                    if (Ano === chartYear && Estacion === estacionData) {
-                        radiationChartData.push({
-                            Ano, Mes, Dia, Zafra, Radiacion
-                        });
-                    }                    
+                    const { Ano, Mes, Dia, Zafra, Radiacion, Estacion, Cuadrante, Fecha, Region, Estrato } = climate;
+                    if (Ano === chartYear) radiationChartData.push({ Ano, Mes, Dia, Zafra, Radiacion, Fecha, Estacion, Region });
+                    if (!quadrantData.includes(Cuadrante)) quadrantData.push(Cuadrante);
+                    if (!regionData.includes(Region)) regionData.push(Region);
+                    if (!estratoData.includes(Estrato)) estratoData.push(Estrato);
                 }
-                renderRadiationChart(radiationChartData);
+                for (const product of productData) {
+                    const { lot } = product;
+                    if (!lotArray.includes(lot)) {
+                        let ids = [];
+                        lotArray.push(lot);
+                        const RLotData = productData.filter((pro) => {
+                            const Rlot = pro.lot;
+                            return Rlot === lot;
+                        });
+                        for (const ele of RLotData) {
+                            const { id_com_pims } = ele;
+                            ids.push(id_com_pims);
+                        }
+                        lotData.push({ lot, ID_COMP: ids });
+                    }
+                }
+                preRenderRadiationChart(radiationChartData);
+                getQuadrant(quadrantData);
+                getRegion(regionData);
+                getEstrato(estratoData);
+                getLot(lotData);
             }, 500);
         }
     })
@@ -61,22 +91,72 @@ $(document).ready(() => {
     })
 })
 
+const preRenderRadiationChart = (data = []) => {
+    let radiationChartRealData = [];
+    fechaData = [];
+    for (const element of data) {
+        let rData = [];
+        const { Ano, Mes, Dia, Zafra, Estacion, Cuadrante, Fecha } = element;
+        if (!fechaData.includes(Fecha)) {
+            fechaData.push(Fecha);
+            rData = data.filter((chartData) => {
+                const RFecha = chartData.Fecha;
+                return RFecha === Fecha;
+            });
+            let radiationSum = 0;
+            for (const e of rData) {
+                radiationSum += Number(e.Radiacion);
+            }
+            const no = rData.length;
+            radiationChartRealData.push({ Ano, Mes, Dia, Zafra, Radiacion: (radiationSum / no), Estacion, Cuadrante, Fecha });
+        }
+    }
+    renderRadiationChart(radiationChartRealData);
+}
+
 const radiationChartFilter = () => {
+    let query = {};
+    
     const year = $("#radiation-year-filter").val();
     const estation = $("#radiation-estation-filter").val();
+    const quadrant = $("#radiation-quadrant-filter").val();
+    const region = $("#radiation-region-filter").val();
+    const estrato = $("#radiation-estrato-filter").val();
+    const lot = $("#radiation-lot-filter").val();
+
     radiationChart.destroy();
     chartYear = year;
     estacionData = estation;
+    quadrantRadiation = quadrant;
+    regionRadiation = region;
+    estratoRadiation = estrato;
+    lotRadiation = lot;
+
+    (estacionData!=="All") ? query.Estacion = estacionData : {};
+    (quadrantRadiation!=="All") ? query.Cuadrante = quadrantRadiation : {};
+    (regionRadiation!=="All") ? query.Region = regionRadiation : {};
+    (estratoRadiation!=="All") ? query.Estrato = estratoRadiation : {};
+    (lot!=="All") ? query.ID_COMP = lot.split("|") : {};
+    query.Ano = chartYear;
+
     let radiationChartData = [];
     for (const climate of climateData) {
-        const { Ano, Mes, Dia, Zafra, Radiacion, Estacion } = climate;
-        if (Ano === chartYear && Estacion === estacionData) {
-            radiationChartData.push({
-                Ano, Mes, Dia, Zafra, Radiacion
-            });
-        }                    
+        let confirm = true;
+        const { Ano, Mes, Dia, Zafra, Radiacion, Fecha } = climate;
+        for (const key in query) {
+            if (key!=='ID_COMP') confirm = confirm && (climate[key] === query[key]);
+            else {
+                let ID_confirm = false;
+                for (const e of query[key]) {
+                    ID_confirm = ID_confirm || (climate[key] === e);
+                }
+                confirm = confirm && ID_confirm;
+            }
+        }
+        
+        if (confirm) radiationChartData.push({ Ano, Mes, Dia, Zafra, Radiacion, Fecha });
     }
-    renderRadiationChart(radiationChartData);
+    preRenderRadiationChart(radiationChartData);
 }
 
 const etoChartFilter = () => {
@@ -97,10 +177,21 @@ const etoChartFilter = () => {
     renderEtoChart(etoChartData);
 }
 
+const getPointBackgroundColor = (ctx) => {
+    const { raw } = ctx;
+    if (0<=raw && raw<18) return 'rgb(255, 255, 0)';
+    else if (18<=raw && raw<=20) return 'rgb(0, 255, 0)';
+    else if (raw>20) return 'rgb(0, 100, 0)';
+    else return 'rgb(255, 0, 0)';
+}
+
+const alternatePointStyles = (ctx) => {
+    var index = ctx.dataIndex;
+    return index % 2 === 0 ? 'circle' : 'rect';
+}
+
 const renderRadiationChart = (data = []) => {
-    RadiationMonthString = "";
-    RadiationMonth = [];
-    $("#zafra-content").html("");
+    let zafraData = "";
     let labelData = [];
     let dps = [];
     var chart = document.getElementById('chart').getContext('2d');
@@ -113,25 +204,25 @@ const renderRadiationChart = (data = []) => {
     for (let index = 1; index < data.length; index+=5) {
         const element = data[index];
         let { Radiacion, Zafra, Mes } = element;
+        zafraData = (Zafra) && Zafra;
         Mes = Number(Mes);
         !RadiationMonth.includes(Mes) && RadiationMonth.push(Mes);
-        labelData.push(Math.round(index / 5) + 1);
+        labelData.push(`${Math.round(index / 5) + 1}(${Mes})`);
         dps.push(Radiacion);
-        $("#zafra-content").html(Zafra);
     }
-
-    for (const month of RadiationMonth) RadiationMonthString += `<span> ${monthArray[month]} </span>`;
-    $("#radiation-month").html(RadiationMonthString);
 
     var data  = {
         labels: labelData,
         datasets: [{
-                label: 'Radiación',
-                backgroundColor: gradient,
-                pointBackgroundColor: 'white',
-                borderWidth: 1,
-                borderColor: '#911215',
-                data: dps,
+            label: 'Radiación',
+            backgroundColor: gradient,
+            pointBackgroundColor: 'white',
+            borderWidth: 1,
+            borderColor: '#911215',
+            data: dps,
+            pointBackgroundColor: getPointBackgroundColor,
+            pointRadius: 5,
+            pointHoverRadius: 7,
         }]
     };
 
@@ -158,14 +249,12 @@ const renderRadiationChart = (data = []) => {
         },
         elements: {
             line: {
-                tension: 0.4
-            }
+                tension: 0.4,
+                fill: true,
+            },
         },
         legend: {
             display: false
-        },
-        point: {
-            backgroundColor: 'white'
         },
         tooltips: {
             titleFontFamily: 'Open Sans',
@@ -179,7 +268,7 @@ const renderRadiationChart = (data = []) => {
         plugins: {
             title: {
                 display: true,
-                text: 'Radiación Chart',
+                text: `Radiación Chart ${zafraData ? `(Zafra: ${zafraData})` : ''}`,
                 font: {
                     size: 30,
                 }
@@ -187,16 +276,10 @@ const renderRadiationChart = (data = []) => {
         }
     };
 
-    radiationChart = new Chart(chart, {
-        type: 'line',
-        data: data,
-        options,
-    });
+    radiationChart = new Chart(chart, { type: 'line', data, options });
 }
 
 const renderEtoChart = (data = []) => {
-    EtoMonthString = "";
-    EtoMonth = [];
     $("#zafra-content-eto").html("");
     let labelData = [];
     let dps = [];
@@ -212,23 +295,22 @@ const renderEtoChart = (data = []) => {
         let { Eto_PENMAN, Zafra, Mes } = element;
         Mes = Number(Mes);
         !EtoMonth.includes(Mes) && EtoMonth.push(Mes);
-        labelData.push(Math.round(index / 5)+1);
+        labelData.push(`${Math.round(index / 5)+1}(${Mes})`);
         dps.push(Eto_PENMAN);
         $("#zafra-content-eto").html(Zafra);
     }
 
-    for (const month of EtoMonth) EtoMonthString += `<span> ${monthArray[month]} </span>`;
-    $("#eto-month").html(EtoMonthString);
-
     var data  = {
         labels: labelData,
         datasets: [{
-                label: 'ETO',
-                backgroundColor: gradient,
-                pointBackgroundColor: 'white',
-                borderWidth: 1,
-                borderColor: '#911215',
-                data: dps,
+            label: 'ETO',
+            backgroundColor: gradient,
+            pointBackgroundColor: 'white',
+            borderWidth: 1,
+            borderColor: '#911215',
+            data: dps,
+            pointRadius: 5,
+            pointHoverRadius: 7,
         }]
     };
 
@@ -255,15 +337,11 @@ const renderEtoChart = (data = []) => {
         },
         elements: {
             line: {
-                tension: 0.4
+                tension: 0.4,
+                fill: true,
             }
         },
-        legend: {
-            display: false
-        },
-        point: {
-            backgroundColor: 'white'
-        },
+        legend: { display: false },
         tooltips: {
             titleFontFamily: 'Open Sans',
             backgroundColor: 'rgba(0,0,0,0.3)',
@@ -277,16 +355,52 @@ const renderEtoChart = (data = []) => {
             title: {
                 display: true,
                 text: 'ETO Chart',
-                font: {
-                    size: 30,
-                }
+                font: { size: 30 }
             }
         }
     };
 
-    etoChart = new Chart(chart, {
-        type: 'line',
-        data,
-        options,
-    });
+    etoChart = new Chart(chart, { type: 'line', data, options });
+}
+
+const getQuadrant = (data = []) => {
+    let quadrantOptionHtml = "";
+    for (const ele of data) {
+        quadrantOptionHtml += `
+            <option value="${ele}"> ${ele==='All' ? 'All ( Quadrant )' : ele} </option>
+        `
+    }
+    $("#radiation-quadrant-filter").html(quadrantOptionHtml);
+}
+
+const getRegion = (data = []) => {
+    let regionOptionHtml = "";
+    for (const ele of data) {
+        regionOptionHtml += `
+            <option value="${ele}"> ${ele==='All' ? 'All ( Region )' : ele} </option>
+        `
+    }
+    $("#radiation-region-filter").html(regionOptionHtml);
+}
+
+const getEstrato = (data = []) => {
+    let estratoOptionHtml = "";
+    for (const ele of data) {
+        estratoOptionHtml += `
+            <option value="${ele}"> ${ele==='All' ? 'All ( Estrato )' : ele} </option>
+        `
+    }
+    $("#radiation-estrato-filter").html(estratoOptionHtml);
+}
+
+const getLot = (data = []) => {
+    let lotOptionHtml = "";
+    for (const ele of data) {
+        const { lot, ID_COMP } = ele;
+        const ids = ID_COMP ? ID_COMP.join("|") : "";
+        lotOptionHtml += `
+            <option value="${lot==='All' ? 'All' : ids}"> ${lot==='All' ? 'All ( Lot )' : lot} </option>
+        `
+    }
+    $("#radiation-lot-filter").html(lotOptionHtml);
 }

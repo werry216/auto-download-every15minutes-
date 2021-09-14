@@ -2,20 +2,34 @@ let reportClimateTable;
 let reportProductTable;
 let productData = [];
 let climateData = [];
+let productItemConfirm = false;
+
 $(document).ready(() => {
     $("#report-climate-loading").loading('circle1');
     $("#graphicRadiation").css("display", "none");
     $("#graphicEto").css("display", "none");
-    $.post("vendor/server/getReport.php").then((result) => {
+    $.post("vendor/server/getReport.php", { type: "get_climate" }).then((result) => {
         result = JSON.parse(result);
         const { climate_reports, product_reports } = result;
         climateData = climate_reports;
         productData = product_reports;
         renderClimateTable(climate_reports);
-        renderProductTable(product_reports);
         $("#report-climate-loading").loading(false);
     })
     $("#climate-download-btn").on("click", () => downloadClimateReport())
+    $("#productivity-item").on("click", () => {
+        if (!productItemConfirm) {
+            productItemConfirm = true;
+            $("#report-product-loading").loading("circle1");
+            $.post("vendor/server/getReport.php", { type: "get_product" }).then((result) => {
+                result = JSON.parse(result);
+                const { product_reports } = result;
+                productData = product_reports;
+                renderProductTable(product_reports);
+                $("#report-product-loading").loading(false);
+            })
+        }
+    })
 })
 
 const renderClimateTable = (climates = []) => {
@@ -29,7 +43,7 @@ const renderClimateTable = (climates = []) => {
             velocidad_viento_maxima, mojadura, presion_atmosferica, presion_atmosferica_minima,
             presion_atmosferica_maxima, direccion_viento, Rso, Kpa, pendiente_curva,
             presion_de, presion_real_de, deficit_presion, velocidad_estandar, Rns, Rnl, Rn,
-            Aplica, Eto_Hargreaves, Eto_PENMAN,
+            Aplica, Eto_Hargreaves, Eto_PENMAN, ID_COMP
         } = ele;
         dataSet.push([
             no++, Zafra, Ano, Mes, Fecha, Dia, Cuadrante, Estrato, Altitude_Use, ETP, Radiacion,
@@ -38,7 +52,7 @@ const renderClimateTable = (climates = []) => {
             mojadura, presion_atmosferica, presion_atmosferica_minima, presion_atmosferica_maxima,
             direccion_viento, Rso, Kpa, pendiente_curva,
             presion_de, presion_real_de, deficit_presion, velocidad_estandar, Rns, Rnl, Rn,
-            Eto_PENMAN, Eto_Hargreaves, Aplica,
+            Eto_PENMAN, Eto_Hargreaves, Aplica, ID_COMP,
         ]);
     }
     reportClimateTable = $('#climate-table').DataTable({
@@ -87,6 +101,7 @@ const renderClimateTable = (climates = []) => {
             { title: "Eto PENMAN MONTEITH(mm/dia)" },
             { title: "Eto(mm/dia) Hargreaves" },
             { title: "APLICA" },
+            { title: "ID_COMP" },
         ],
         scrollX: true,
     });

@@ -123,7 +123,7 @@ $(document).ready(() => {
                 new_product_TONS_CLEANER, new_product_humedad_ant, new_product_extra1,
                 new_product_extra2, type: "add_product_report",
             }
-            $("#report-climate-loading").loading("circle1");
+            $("#report-product-loading").loading("circle1");
             $("#product-add-close-btn").click();
             reportProductTable.destroy();
             $.post("vendor/server/product.php", data).then((result) => {
@@ -131,7 +131,7 @@ $(document).ready(() => {
                 const { product_reports } = result;
                 productData = product_reports;
                 renderProductTable(product_reports);
-                $("#report-climate-loading").loading(false);
+                $("#report-product-loading").loading(false);
             })
         }
     })

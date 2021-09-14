@@ -53,6 +53,7 @@
             $zafra = $row_zafra["zafra"];
         }
 
+        $ID_COMP;
         $radiacion = $rowData[5] * 0.00089681;
         $tem = $rowData[2];
         $temMin = $rowData[3];
@@ -97,6 +98,7 @@
         $result_master_batches = $conn->query($sql_batches);
         
         foreach($result_master_batches as $row_master_batches) {
+            $ID_COMP = $row_master_batches["ID_COMP"];
             $Cuadrante = $row_master_batches["Cuadrante"];
             $Estrato = $row_master_batches["Estrato"];
             $Altitude_Use = $row_master_batches["ALTITUD_Utilizar"];
@@ -142,7 +144,7 @@
         $clima = $conn->query($sql_clima);
         if ($clima->num_rows==0) {
             $clima_insert_query = "INSERT INTO reporte_clima (
-                Estacion, Fecha, temperatura, temperatura_min, temperatura_max, Radiacion,
+                Estacion, Fecha, temperatura, temperatura_min, temperatura_max, Radiacion, ID_COMP,
                 Ano, Mes, Dia, R0, Zafra, Amplitud_Termica, radiacion_promedio, humedad_relativa,
                 humedad_relativa_minima, humedad_relativa_maxima, precipitacion, velocidad_viento,
                 velocidad_viento_minima, velocidad_viento_maxima, mojadura, presion_atmosferica,
@@ -150,7 +152,7 @@
                 pendiente_curva, presion_de, presion_real_de, deficit_presion, Eto_Hargreaves, velocidad_estandar,
                 Cuadrante, Estrato, Altitude_Use, Region, Codigo_buscar, Kpa, Rnl, Rn, Eto_PENMAN, Aplica)
             VALUES (
-                '$Estacion', '$rowData[1]', '$tem', '$temMin', '$temMax', '$radiacion',
+                '$Estacion', '$rowData[1]', '$tem', '$temMin', '$temMax', '$radiacion', '$ID_COMP',
                 '$yearStr', '$monthStr', '$dateStr', '$R0', '$zafra', '$Amplitud_Termica', '$rowData[6]', '$hum',
                 '$humMin', '$humMax', '$rowData[10]', '$velocidad_viento',
                 '$velMin', '$velMax', '$rowData[14]', '$rowData[15]',

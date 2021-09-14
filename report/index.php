@@ -132,7 +132,7 @@
     ><br />
       <div id="radiation-chart-container">
         <div class="row">
-          <div class="col col-md-3 col-lg-3 col-xs-12">
+          <div class="col col-md-2 col-lg-2 col-xs-12">
             <select class="form-control" id="radiation-year-filter" onchange="radiationChartFilter()">
               <option value="2020"> 2020 </option>
               <option value="2021"> 2021 </option>
@@ -149,6 +149,7 @@
           </div>
           <div class="col col-md-3 col-lg-3 col-xs-12">
             <select class="form-control" id="radiation-estation-filter" onchange="radiationChartFilter()">
+              <option value="All"> All ( Estation ) </option>
               <option value="Bonanza"> Bonanza </option>
               <option value="La Giralda"> La Giralda </option>
               <option value="Amazonas"> Amazonas </option>
@@ -167,33 +168,29 @@
             </select>
           </div>
           <div class="col col-md-3 col-lg-3 col-xs-12">
-            <span style="font-size: 25px;"> zafra: <span id="zafra-content"></span> </span>
+            <select class="form-control" id="radiation-quadrant-filter" onchange="radiationChartFilter()"></select>
+          </div>
+          <div class="col col-md-2 col-lg-2 col-xs-12">
+            <select class="form-control" id="radiation-region-filter" onchange="radiationChartFilter()"></select>
+          </div>
+          <div class="col col-md-2 col-lg-2 col-xs-12">
+            <select class="form-control" id="radiation-estrato-filter" onchange="radiationChartFilter()"></select>
+          </div>
+        </div><br />
+        <div class="row">
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="radiation-lot-filter" onchange="radiationChartFilter()"></select>
           </div>
         </div>
         <br />
         <canvas id="chart" width="400" height="120"></canvas>
-        <div id="radiation-month" style="height: 24px; margin: 0 8px auto 27px; border: 1px solid blue; display: flex; align-items: center; justify-content: space-around;">
-          <span> ene </span>
-          <span> feb </span>
-          <span> mar </span>
-          <span> abr </span>
-          <span> may </span>
-          <span> jun </span>
-          <span> jul </span>
-          <span> ago </span>
-          <span> sep </span>
-          <span> oct </span>
-          <span> nov </span>
-          <span> dic </span>
-        </div>
       </div>
     </div>
-    <div id="graphicEto" class="tab-pane fade"
-      style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;"
-    ><br />
+    <div id="graphicEto" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
+      <br />
       <div id="eto-chart-container">
         <div class="row">
-          <div class="col col-md-3 col-lg-3 col-xs-12">
+          <div class="col col-md-2 col-lg-2 col-xs-12">
             <select class="form-control" id="eto-year-filter" onchange="etoChartFilter()">
               <option value="2020"> 2020 </option>
               <option value="2021"> 2021 </option>
@@ -208,7 +205,7 @@
               <option value="2030"> 2030 </option>
             </select>
           </div>
-          <div class="col col-md-3 col-lg-3 col-xs-12">
+          <div class="col col-md-2 col-lg-2 col-xs-12">
             <select class="form-control" id="eto-estation-filter" onchange="etoChartFilter()">
               <option value="Bonanza"> Bonanza </option>
               <option value="La Giralda"> La Giralda </option>
@@ -227,26 +224,12 @@
               <option value="Bouganvilia"> Bouganvilia </option>
             </select>
           </div>
-          <div class="col col-md-3 col-lg-3 col-xs-12">
+          <div class="col col-md-2 col-lg-2 col-xs-12">
             <span style="font-size: 25px;"> zafra: <span id="zafra-content-eto"></span> </span>
           </div>
         </div>
         <br />
         <canvas id="chart-eto" width="400" height="120"></canvas>
-        <div id="eto-month" style="height: 24px; margin: 0 8px auto 27px; border: 1px solid blue; display: flex; align-items: center; justify-content: space-around;">
-          <span> ene </span>
-          <span> feb </span>
-          <span> mar </span>
-          <span> abr </span>
-          <span> may </span>
-          <span> jun </span>
-          <span> jul </span>
-          <span> ago </span>
-          <span> sep </span>
-          <span> oct </span>
-          <span> nov </span>
-          <span> dic </span>
-        </div>
       </div>
     </div>
   </div>
@@ -706,7 +689,7 @@
 <script src="../vendor/toast/js/jquery.toast.js"></script>
 
 <!-- partial -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.5.1/dist/chart.min.js"></script>
 
 <script src="./vendor/js/monthArray.js"></script>
 <script src="./vendor/js/main.js"></script>
