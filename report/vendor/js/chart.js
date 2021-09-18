@@ -1,4 +1,4 @@
-let radiationChart, etoChart;
+let radiationChart, etoChart, rainChart;
 let chartYear = new Date().getFullYear().toString();
 let etoYear = new Date().getFullYear().toString();
 
@@ -11,6 +11,7 @@ let estacionData = "";
 let estacionEto = "Bonanza";
 let renderRadiationConfirm = false;
 let renderEtoConfirm = false;
+let renderRainChartConfirm = false;
 let RadiationMonth = [];
 let EtoMonth = [];
 let fechaData = [];
@@ -26,6 +27,7 @@ $(document).ready(() => {
     $("#eto-year-filter").val(etoYear);
     $("#graphicRadiation-item").on("click", () => {
         $("#graphicRadiation").css("display", "block");
+        $("#graphicRain").css("display", "none");
         $("#graphicEto").css("display", "none");
         if (!renderRadiationConfirm) {
             renderRadiationConfirm = true;
@@ -64,6 +66,7 @@ $(document).ready(() => {
     })
     $("#graphicEto-item").on("click", () => {
         $("#graphicRadiation").css("display", "none");
+        $("#graphicRain").css("display", "none");
         $("#graphicEto").css("display", "block");
         if (!renderEtoConfirm) {
             renderEtoConfirm = true;
@@ -81,13 +84,29 @@ $(document).ready(() => {
             }, 500);
         }
     })
+    $("#graphicRain-item").on("click", () => {
+        $("#graphicRain").css("display", "block");
+        $("#graphicRadiation").css("display", "none");
+        $("#graphicEto").css("display", "none");
+
+        if (!renderRainChartConfirm) {
+            $.post("vendor/server/rain.php", { type: "get_allrain" }).then((result) => {
+                renderRainChartConfirm = true;
+                result = JSON.parse(result);
+                const { rains, rain_masters } = result;
+                console.log(rains, rain_masters);
+            })
+        }
+    })
     $("#climate-item").on("click", () => {
         $("#graphicRadiation").css("display", "none");
         $("#graphicEto").css("display", "none");
+        $("#graphicRain").css("display", "none");
     })
     $("#productivity-item").on("click", () => {
         $("#graphicRadiation").css("display", "none");
         $("#graphicEto").css("display", "none");
+        $("#graphicRain").css("display", "none");
     })
 })
 
