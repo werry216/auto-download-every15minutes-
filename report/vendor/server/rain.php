@@ -86,7 +86,8 @@
 
     function get_allrain($conn)
     {
-        $sql_rain = "SELECT * FROM rain";
+        $year = $_POST["year"];
+        $sql_rain = "SELECT * FROM rain WHERE ANO = '$year'";
         $result_rain = $conn->query($sql_rain);
         $rains = array();
 

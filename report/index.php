@@ -257,10 +257,11 @@
     </div>
     <div id="graphicRain" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
       <br />
+      <div id="rain-chart-loading"></div>
       <div id="rain-chart-container">
-        <!-- <div class="row">
+        <div class="row">
           <div class="col col-md-2 col-lg-2 col-xs-12">
-            <select class="form-control" id="eto-year-filter" onchange="etoChartFilter()">
+            <select class="form-control" id="rain-year-filter" onchange="rainChartFilter()">
               <option value="2020"> 2020 </option>
               <option value="2021"> 2021 </option>
               <option value="2022"> 2022 </option>
@@ -274,30 +275,8 @@
               <option value="2030"> 2030 </option>
             </select>
           </div>
-          <div class="col col-md-2 col-lg-2 col-xs-12">
-            <select class="form-control" id="eto-estation-filter" onchange="etoChartFilter()">
-              <option value="Bonanza"> Bonanza </option>
-              <option value="La Giralda"> La Giralda </option>
-              <option value="Amazonas"> Amazonas </option>
-              <option value="San Rafael"> San Rafael </option>
-              <option value="Concepción"> Concepción </option>
-              <option value="Costa Brava"> Costa Brava </option>
-              <option value="Peten Oficina"> Peten Oficina </option>
-              <option value="Cocales"> Cocales </option>
-              <option value="Cengicana"> Cengicana </option>
-              <option value="Tehuantepeq"> Tehuantepeq </option>
-              <option value="San Antonio EV"> San Antonio EV </option>
-              <option value="Puyumate"> Puyumate </option>
-              <option value="El Balsamo"> El Balsamo </option>
-              <option value="Irlanda"> Irlanda </option>
-              <option value="Bouganvilia"> Bouganvilia </option>
-            </select>
-          </div>
-          <div class="col col-md-2 col-lg-2 col-xs-12">
-            <span style="font-size: 25px;"> zafra: <span id="zafra-content-eto"></span> </span>
-          </div>
         </div>
-        <br /> -->
+        <br />
         <canvas id="chart-rain" width="400" height="120"></canvas>
       </div>
     </div>

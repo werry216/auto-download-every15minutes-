@@ -1,6 +1,7 @@
-let radiationChart, etoChart, rainChart;
+let radiationChart = {}, etoChart = {}, rainChart = {};
 let chartYear = new Date().getFullYear().toString();
 let etoYear = new Date().getFullYear().toString();
+let rainYear = new Date().getFullYear().toString();
 
 let quadrantRadiation = "";
 let regionRadiation = "";
@@ -88,13 +89,43 @@ $(document).ready(() => {
         $("#graphicRain").css("display", "block");
         $("#graphicRadiation").css("display", "none");
         $("#graphicEto").css("display", "none");
-
         if (!renderRainChartConfirm) {
-            $.post("vendor/server/rain.php", { type: "get_allrain" }).then((result) => {
+            $("#rain-year-filter").val(rainYear);
+            $("#rain-chart-loading").loading("circle1");
+            $.post("vendor/server/rain.php", { type: "get_allrain", year: rainYear }).then((result) => {
+                let fechas = [];
                 renderRainChartConfirm = true;
+                let rainCharts = [];
                 result = JSON.parse(result);
                 const { rains, rain_masters } = result;
-                console.log(rains, rain_masters);
+                setTimeout(() => {
+                    for (const rain of rains) {
+                        let rainAmount = 0;
+                        let preRains = [];
+                        const { FINCA_LOTE, CD_PLUVIOMETRO, CANT_LLUVIA, FECHA, MES, ANO } = rain;
+                        for (const rain_master of rain_masters) {
+                            const { Codigo_Nuevo, Codigo_Antiguo } = rain_master;
+                            if (FINCA_LOTE === Codigo_Nuevo && CD_PLUVIOMETRO === Codigo_Antiguo) {
+                                if (!fechas.includes(FECHA)) {
+                                    fechas = [...fechas, FECHA];
+                                    preRains = rains.filter((rain)=>{
+                                        return rain.FECHA === FECHA && rain.FINCA_LOTE === Codigo_Nuevo && rain.CD_PLUVIOMETRO === Codigo_Antiguo;
+                                    })
+                                    for (const ele of preRains) {
+                                        rainAmount += ele.CANT_LLUVIA;
+                                    }
+                                    rainCharts = [
+                                        ...rainCharts,
+                                        { FECHA, CANT_LLUVIA : rainAmount / preRains.length, ANO, MES }
+                                    ]
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    renderRainChart(rainCharts);
+                    $("#rain-chart-loading").loading(false);
+                }, 500);
             })
         }
     })
@@ -380,6 +411,129 @@ const renderEtoChart = (data = []) => {
     };
 
     etoChart = new Chart(chart, { type: 'line', data, options });
+}
+
+const renderRainChart = (data = []) => {
+    // $("#zafra-content-eto").html("");
+    let labelData = [];
+    let dps = [];
+    var chart = document.getElementById('chart-rain').getContext('2d');
+    gradient = chart.createLinearGradient(0, 0, 0, 400);
+
+    gradient.addColorStop(0, 'rgba(255, 0,0, 0.5)');
+    gradient.addColorStop(0.5, 'rgba(255, 0, 0, 0.25)');
+    gradient.addColorStop(1, 'rgba(255, 0, 0, 0)');
+
+    for (let index = 1; index < data.length; index+=5) {
+        const element = data[index];
+        let { FECHA, CANT_LLUVIA, ANO, MES } = element;
+        // MES = Number(MES);
+        // !EtoMonth.includes(MES) && EtoMonth.push(MES);
+        labelData.push(`${Math.round(index / 5)+1}(${MES})`);
+        dps.push(CANT_LLUVIA);
+        // $("#zafra-content-eto").html(Zafra);
+    }
+
+    var dataSet  = {
+        labels: labelData,
+        datasets: [{
+            label: 'Rain',
+            backgroundColor: gradient,
+            pointBackgroundColor: 'white',
+            borderWidth: 1,
+            borderColor: '#911215',
+            data: dps,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+        }]
+    };
+
+    var options = {
+        responsive: true,
+        maintainAspectRatio: true,
+        animation: {
+            easing: 'easeInOutQuad',
+            duration: 520
+        },
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    color: 'rgba(200, 200, 200, 0.05)',
+                    lineWidth: 1
+                }
+            }],
+            yAxes: [{
+                gridLines: {
+                    color: 'rgba(200, 200, 200, 0.08)',
+                    lineWidth: 1
+                }
+            }]
+        },
+        elements: {
+            line: {
+                tension: 0.4,
+                fill: true,
+            }
+        },
+        legend: { display: false },
+        tooltips: {
+            titleFontFamily: 'Open Sans',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+            titleFontColor: 'red',
+            caretSize: 5,
+            cornerRadius: 2,
+            xPadding: 10,
+            yPadding: 10
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Rain Chart',
+                font: { size: 30 }
+            }
+        }
+    };
+
+    rainChart = new Chart(chart, { type: 'line', data: dataSet, options });
+}
+
+const rainChartFilter = () => {
+    const year = $("#rain-year-filter").val();
+    rainChart.destroy();
+    rainYear = year;
+    $("#rain-chart-loading").loading("circle1");
+    $.post("vendor/server/rain.php", { type: "get_allrain", year: rainYear }).then((result) => {
+        let fechas = [];
+        let rainCharts = [];
+        result = JSON.parse(result);
+        const { rains, rain_masters } = result;
+        for (const rain of rains) {
+            let rainAmount = 0;
+            let preRains = [];
+            const { FINCA_LOTE, CD_PLUVIOMETRO, CANT_LLUVIA, FECHA, MES, ANO } = rain;
+            for (const rain_master of rain_masters) {
+                const { Codigo_Nuevo, Codigo_Antiguo } = rain_master;
+                if (FINCA_LOTE === Codigo_Nuevo && CD_PLUVIOMETRO === Codigo_Antiguo) {
+                    if (!fechas.includes(FECHA)) {
+                        fechas = [...fechas, FECHA];
+                        preRains = rains.filter((rain)=>{
+                            return rain.FECHA === FECHA && rain.FINCA_LOTE === Codigo_Nuevo && rain.CD_PLUVIOMETRO === Codigo_Antiguo;
+                        })
+                        for (const ele of preRains) {
+                            rainAmount += ele.CANT_LLUVIA;
+                        }
+                        rainCharts = [
+                            ...rainCharts,
+                            { FECHA, CANT_LLUVIA : rainAmount / preRains.length, ANO, MES }
+                        ]
+                    }
+                    break;
+                }
+            }
+        }
+        renderRainChart(rainCharts);
+        $("#rain-chart-loading").loading(false);
+    })
 }
 
 const getQuadrant = (data = []) => {
