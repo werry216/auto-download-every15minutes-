@@ -26,7 +26,7 @@ const downloadRequest = (type = "") => {
         type: "excel",
         txFechaIni,
         txFechaFin,
-        agrupar: (type==="initial") ? "Hora" : "Hora",
+        agrupar: (type==="initial") ? "Dia" : "Hora",
         estaciones: "4,26,20,19,33,21,13,31,1,5,8,24,17,23,6,",
         variables: "AVG(temperatura) AS temperatura,MIN(temperatura) AS temperatura_minima,MAX(temperatura) AS temperatura_maxima,SUM(radiacion) AS radiacion,AVG(radiacion) AS radiacion_promedio,AVG(humedad_relativa) AS humedad_relativa,MIN(humedad_relativa) AS humedad_relativa_minima,MAX(humedad_relativa) AS humedad_relativa_maxima,SUM(precipitacion) AS precipitacion,AVG(velocidad_viento) AS velocidad_viento,MIN(velocidad_viento) AS velocidad_viento_minima,MAX(velocidad_viento) AS velocidad_viento_maxima,AVG(mojadura) AS mojadura,AVG(presion_atmosferica) AS presion_atmosferica,MIN(presion_atmosferica) AS presion_atmosferica_minima,MAX(presion_atmosferica) AS presion_atmosferica_maxima,AVG(direccion_viento) AS direccion_viento,",
         raw: "temperatura,radiacion,humedad_relativa,precipitacion,velocidad_viento,mojadura,presion_atmosferica,direccion_viento,",
@@ -42,6 +42,7 @@ const downloadRequest = (type = "") => {
         dataType: 'json',
         success: function(data) {
             const href = 'https://redmet.icc.org.gt/tmpxls/' + data.filename;
+            window.location.href = href;
             getFileObject(href, function (fileObject) {
                 var fd = new FormData();
                 fd.append("icc_excel", fileObject);
@@ -98,9 +99,9 @@ var getFileObject = function(filePathOrUrl, cb) {
 
 $(document).ready(() => {
     $("#download-btn").on("click", () => downloadRequest("initial"));
-    // $("#stop-btn").on("click", () => {
-    //     clearInterval(download);
-    // });
+    $("#stop-btn").on("click", () => {
+        clearInterval(download);
+    });
 })
 
-// const download = setInterval(downloadRequest, 900000);
+const download = setInterval(downloadRequest, 900000);

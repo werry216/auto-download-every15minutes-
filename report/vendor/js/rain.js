@@ -7,7 +7,7 @@ let rainMasterData = [];
 
 $(document).ready(() => {
     $("#rain-master-item").on("click", () => {
-        $("#graphicRadiation").css("display", "none");
+        $("#graphicAll").css("display", "none");
         $("#graphicRain").css("display", "none");
         $("#graphicEto").css("display", "none");
         if (!renderRainMasterConfirm) {
@@ -23,7 +23,7 @@ $(document).ready(() => {
         }
     })
     $("#rain-item").on("click", () => {
-        $("#graphicRadiation").css("display", "none");
+        $("#graphicAll").css("display", "none");
         $("#graphicRain").css("display", "none");
         $("#graphicEto").css("display", "none");
         if (!renderRainConfirm) {

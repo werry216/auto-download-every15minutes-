@@ -79,12 +79,15 @@
     <li class="nav-item" id="rain-master-item">
       <a class="nav-link" data-toggle="tab" href="#rain-master"> Rain Master </a>
     </li>
-    <li class="nav-item" id="graphicRadiation-item">
+    <li class="nav-item" id="graphicAll-item">
+      <a class="nav-link" data-toggle="tab" href="#graphicAll"> Graphics(Radiación and Eto) </a>
+    </li>
+    <!-- <li class="nav-item" id="graphicRadiation-item">
       <a class="nav-link" data-toggle="tab" href="#graphicRadiation"> Graphics(radiación) </a>
-    </li>
-    <li class="nav-item" id="graphicEto-item">
+    </li> -->
+    <!-- <li class="nav-item" id="graphicEto-item">
       <a class="nav-link" data-toggle="tab" href="#graphicEto"> Graphics(ETO) </a>
-    </li>
+    </li> -->
     <li class="nav-item" id="graphicRain-item">
       <a class="nav-link" data-toggle="tab" href="#graphicRain"> Graphics(Rain) </a>
     </li>
@@ -151,7 +154,7 @@
       <button class="btn btn-danger" id="rain-master-format-btn" style="margin-bottom: 20px;"> Format </button>
       <table id="rain-master-table" class="cell-border hover display nowrap" style="width:100%"></table>
     </div>
-    <div id="graphicRadiation" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
+    <div id="graphicAll" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
       <br />
       <div id="radiation-chart-container">
         <div class="row">
@@ -209,7 +212,65 @@
         <canvas id="chart" width="400" height="120"></canvas>
       </div>
     </div>
-    <div id="graphicEto" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
+    <!-- <div id="graphicRadiation" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
+      <br />
+      <div id="radiation-chart-container">
+        <div class="row">
+          <div class="col col-md-2 col-lg-2 col-xs-12">
+            <select class="form-control" id="radiation-year-filter" onchange="radiationChartFilter()">
+              <option value="2020"> 2020 </option>
+              <option value="2021"> 2021 </option>
+              <option value="2022"> 2022 </option>
+              <option value="2023"> 2023 </option>
+              <option value="2024"> 2024 </option>
+              <option value="2025"> 2025 </option>
+              <option value="2026"> 2026 </option>
+              <option value="2027"> 2027 </option>
+              <option value="2028"> 2028 </option>
+              <option value="2029"> 2029 </option>
+              <option value="2030"> 2030 </option>
+            </select>
+          </div>
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="radiation-estation-filter" onchange="radiationChartFilter()">
+              <option value="All"> All ( Estation ) </option>
+              <option value="Bonanza"> Bonanza </option>
+              <option value="La Giralda"> La Giralda </option>
+              <option value="Amazonas"> Amazonas </option>
+              <option value="San Rafael"> San Rafael </option>
+              <option value="Concepción"> Concepción </option>
+              <option value="Costa Brava"> Costa Brava </option>
+              <option value="Peten Oficina"> Peten Oficina </option>
+              <option value="Cocales"> Cocales </option>
+              <option value="Cengicana"> Cengicana </option>
+              <option value="Tehuantepeq"> Tehuantepeq </option>
+              <option value="San Antonio EV"> San Antonio EV </option>
+              <option value="Puyumate"> Puyumate </option>
+              <option value="El Balsamo"> El Balsamo </option>
+              <option value="Irlanda"> Irlanda </option>
+              <option value="Bouganvilia"> Bouganvilia </option>
+            </select>
+          </div>
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="radiation-quadrant-filter" onchange="radiationChartFilter()"></select>
+          </div>
+          <div class="col col-md-2 col-lg-2 col-xs-12">
+            <select class="form-control" id="radiation-region-filter" onchange="radiationChartFilter()"></select>
+          </div>
+          <div class="col col-md-2 col-lg-2 col-xs-12">
+            <select class="form-control" id="radiation-estrato-filter" onchange="radiationChartFilter()"></select>
+          </div>
+        </div><br />
+        <div class="row">
+          <div class="col col-md-3 col-lg-3 col-xs-12">
+            <select class="form-control" id="radiation-lot-filter" onchange="radiationChartFilter()"></select>
+          </div>
+        </div>
+        <br />
+        <canvas id="chart" width="400" height="120"></canvas>
+      </div>
+    </div> -->
+    <!-- <div id="graphicEto" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
       <br />
       <div id="eto-chart-container">
         <div class="row">
@@ -254,7 +315,7 @@
         <br />
         <canvas id="chart-eto" width="400" height="120"></canvas>
       </div>
-    </div>
+    </div> -->
     <div id="graphicRain" class="tab-pane fade" style="text-align: center; display: flex; align-items: center; justify-content: center; margin: 30px;">
       <br />
       <div id="rain-chart-loading"></div>

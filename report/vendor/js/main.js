@@ -8,6 +8,8 @@ $(document).ready(() => {
     $("#report-climate-loading").loading('circle1');
     $("#graphicRadiation").css("display", "none");
     $("#graphicEto").css("display", "none");
+    $("#graphicAll").css("display", "none");
+    $("#graphicRain").css("display", "none");
     $.post("vendor/server/getReport.php", { type: "get_climate" }).then((result) => {
         result = JSON.parse(result);
         const { climate_reports, product_reports } = result;

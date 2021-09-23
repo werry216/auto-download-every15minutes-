@@ -1,7 +1,7 @@
 TweenLite.defaultEase = Expo.easeOut;
 
 // initTimer(`${new Date().getHours()}:${new Date().getMinutes()}`); // other ways --> "0:15" "03:5" "5:2"
-// initTimer("00:00"); // other ways --> "0:15" "03:5" "5:2"
+initTimer("00:00"); // other ways --> "0:15" "03:5" "5:2"
 
 var confirm = 1;
 var timerEl = document.querySelector('.timer');
