@@ -1,5 +1,7 @@
 let radiationChart = {}, etoChart = {}, rainChart = {};
 let chartYear = new Date().getFullYear().toString();
+let chartMonth;
+let chartID;
 let etoYear = new Date().getFullYear().toString();
 let rainYear = new Date().getFullYear().toString();
 
@@ -20,6 +22,7 @@ let fechaData = [];
 let quadrantData = ["All"];
 let regionData = ["All"];
 let estratoData = ["All"];
+let idData = ["All"];
 let lotData = [{lot: "All"}];
 let lotArray = [];
 
@@ -36,7 +39,7 @@ $(document).ready(() => {
                 let radiationChartData = [];
                 let etoChartData = [];
                 for (const climate of climateData) {
-                    const { Ano, Mes, Dia, Zafra, Radiacion, Estacion, Cuadrante, Fecha, Region, Estrato, Eto_PENMAN } = climate;
+                    const { Ano, Mes, Dia, Zafra, Radiacion, Estacion, Cuadrante, Fecha, Region, Estrato, Eto_PENMAN, ID_COMP } = climate;
                     if (Ano === chartYear) {
                         radiationChartData.push({ Ano, Mes, Dia, Zafra, Radiacion, Fecha, Estacion, Region });
                         etoChartData.push({ Ano, Mes, Dia, Zafra, Eto_PENMAN, Fecha });
@@ -44,6 +47,7 @@ $(document).ready(() => {
                     if (!quadrantData.includes(Cuadrante)) quadrantData.push(Cuadrante);
                     if (!regionData.includes(Region)) regionData.push(Region);
                     if (!estratoData.includes(Estrato)) estratoData.push(Estrato);
+                    if (!idData.includes(ID_COMP)) idData.push(ID_COMP);
                 }
                 for (const product of productData) {
                     const { lot } = product;
@@ -67,6 +71,7 @@ $(document).ready(() => {
                 getRegion(regionData);
                 getEstrato(estratoData);
                 getLot(lotData);
+                getID(idData);
             }, 500);
         }
     })
@@ -84,7 +89,7 @@ $(document).ready(() => {
                         etoChartData.push({
                             Ano, Mes, Dia, Zafra, Eto_PENMAN
                         });
-                    }                    
+                    }
                 }
                 renderEtoChart(etoChartData);
             }, 500);
@@ -192,19 +197,23 @@ const radiationChartFilter = () => {
     let query = {};
     
     const year = $("#radiation-year-filter").val();
+    const month = $("#radiation-month-filter").val();
     const estation = $("#radiation-estation-filter").val();
     const quadrant = $("#radiation-quadrant-filter").val();
     const region = $("#radiation-region-filter").val();
     const estrato = $("#radiation-estrato-filter").val();
     const lot = $("#radiation-lot-filter").val();
+    const ID = $("#radiation-id-filter").val();
 
     radiationChart.destroy();
     chartYear = year;
+    chartMonth = month;
     estacionData = estation;
     quadrantRadiation = quadrant;
     regionRadiation = region;
     estratoRadiation = estrato;
     lotRadiation = lot;
+    chartID = ID;
 
     (estacionData!=="All") ? query.Estacion = estacionData : {};
     (quadrantRadiation!=="All") ? query.Cuadrante = quadrantRadiation : {};
@@ -212,6 +221,8 @@ const radiationChartFilter = () => {
     (estratoRadiation!=="All") ? query.Estrato = estratoRadiation : {};
     (lot!=="All") ? query.ID_COMP = lot.split("|") : {};
     query.Ano = chartYear;
+    (chartMonth!=="All") ? query.Mes = chartMonth : {};
+    (chartID!=="All") ? query.ID_COMP = [chartID] : {};
 
     let radiationChartData = [];
     let etoChartData = [];
@@ -625,4 +636,14 @@ const getLot = (data = []) => {
         `
     }
     $("#radiation-lot-filter").html(lotOptionHtml);
+}
+
+const getID = (data = []) => {
+    let idOptionHtml = "";
+    for (const ele of data) {
+        idOptionHtml += `
+            <option value="${ele}"> ${ele==='All' ? 'All ( ID COMP )' : ele} </option>
+        `
+    }
+    $("#radiation-id-filter").html(idOptionHtml);
 }
