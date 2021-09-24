@@ -3,7 +3,7 @@ const downloadRequest = (type = "") => {
     let today = new Date();
     let next = new Date();
     if (type==="initial") {
-        today = new Date("2021-01-01");
+        today = new Date("2000-01-01");
     } else {
         today.setMinutes(today.getMinutes() - 30);
         next.setMinutes(today.getMinutes() - 15);

@@ -135,6 +135,10 @@
     </div>
     <div id="productivity" class="tab-pane fade"><br />
       <div id="report-product-loading"></div>
+      <div class="custom-file mb-3">
+        <input type="file" class="product-file-input" id="customFileProduct" name="filename">
+        <label class="custom-file-label" for="customFileProduct">Choose Excel file</label>
+      </div>
       <button class="btn btn-danger" id="product-download-btn"> Download </button>
       <button data-toggle="modal" data-target="#product-add-modal" class="btn btn-primary" style="margin-bottom: 20px; float: right"> New </button>
       <table id="product-table" class="cell-border hover display nowrap" style="width:100%"></table>
